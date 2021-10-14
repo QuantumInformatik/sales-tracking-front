@@ -45,6 +45,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       code: [null, Validators.required],
       stock: [null, Validators.required],
       providerId: [null, [Validators.required]],
+      providerProductId: [null],
       netPrice: [null, [Validators.required]],
       sellPrice: [null, [Validators.required]],
       timestamp: [null]
@@ -62,6 +63,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       stock: this.productEdit?.stock,
       providerId: provider,
       netPrice: this.productEdit?.netPrice,
+      providerProductId: this.productEdit?.providerProductId,
       sellPrice: this.productEdit?.sellPrice,
       timestamp: this.productEdit?.timestamp,
     });
