@@ -1,0 +1,130 @@
+<div class="card card-user">
+  <div class="card-header">
+    <h5 class="card-title">Products</h5>
+  </div>
+  <div class="card-body">
+    <div class="col-4">
+      <div class="mb-2">
+        <label class="form-label">Search products</label><br>
+        <p-autoComplete [(ngModel)]="productFind" [suggestions]="products" (onSelect)="selectProduct($event)"
+                        (completeMethod)="filterProduct($event)" field="name" [dropdown]="true">
+          <ng-template let-product pTemplate="item">
+            <div class="product">
+              <div>{{product.name}}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+    </div>
+    <br>
+
+    <p-table [value]="productsInvoice" dataKey="id" responsiveLayout="scroll"
+             [loading]="loading" [paginator]="true" sortMode="single" [sortField]="sortField" [columns]="cols"
+             [sortOrder]="sortOrder" [reorderableColumns]="true" [rows]="10" [lazy]="false" [totalRecords]="totalRecords">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon *ngIf="col.sort" [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{product.code}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.sellPrice}}</td>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="number" [(ngModel)]="product.quantity" style="width:80px" (ngModelChange)="onChange(product)">
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{product.quantity | number}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>{{getTotal(product.quantity, product.sellPrice)}}</td>
+          <td>
+            <p-tag *ngIf="product.stock > 0" value="{{product.stock}}" rounded="true" severity="success"></p-tag>
+            <p-tag *ngIf="product.stock <= 0" value="{{product.stock}}" rounded="true" severity="danger"></p-tag>
+          </td>
+
+          <td style="width: 170px">
+            <div class="row">
+              <div class="actions-table">
+                <i *ngIf="product.quantity && product.stock > 0" class="pi pi-plus-circle pi-plus-circle cursorPointer" style="font-size: 2rem" (click)="addProduct(product)"></i>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="text-center" colspan="8" style="text-align: center;">
+            <b class="h8">There is no information</b>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<div class="card card-user">
+  <div class="card-header">
+    <h5 class="card-title">Products selected</h5>
+  </div>
+  <div class="card-body">
+    <p-table [value]="productsInvoiceSelected"  responsiveLayout="scroll"
+             [loading]="loadingS" [paginator]="true" sortMode="single" [sortField]="sortField" [columns]="colsSelected"
+             [sortOrder]="sortOrder"  [rows]="10" [lazy]="false" [totalRecords]="totalRecords">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon *ngIf="col.sort" [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{product.code}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.sellPrice}}</td>
+          <td>{{product.quantity}}</td>
+          <td>{{getTotal(product.quantity, product.sellPrice)}}</td>
+          <td style="width: 170px">
+            <div class="row">
+              <div class="actions-table">
+                <i *ngIf="product.quantity" class="pi pi-minus-circle pi-minus-circle cursorPointer" style="font-size: 2rem" (click)="removeProduct(product)"></i>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="text-center" colspan="8" style="text-align: center;">
+            <b class="h8">There is no information</b>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<div class="card card-user">
+  <div class="card-body">
+    <div align="right">
+      <h5>Subtotal: {{subtotal}}</h5>
+      <h5>Total: {{total}}</h5>
+    </div>
+    <div class="row mr-1">
+      <div class="update ml-auto ">
+        <button type="submit" class="btn btn-primary btn-round" (click)="saveInvoice()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

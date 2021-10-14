@@ -1,0 +1,62 @@
+<div class="card card-user">
+  <div class="card-header">
+    <h5 class="card-title">Products</h5>
+  </div>
+  <div class="card-body">
+
+    <div class="col-4">
+      <div class="mb-2">
+        <label class="form-label">Search products</label><br>
+        <p-autoComplete [(ngModel)]="productFind" [suggestions]="products" (onSelect)="selectProduct($event)"
+                        (completeMethod)="filterProduct($event)" field="name" [dropdown]="true">
+          <ng-template let-product pTemplate="item">
+            <div class="product">
+              <div>{{product.name}}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+    </div>
+    <br>
+
+    <p-table [value]="products" [loading]="loading" [paginator]="true" sortMode="single" [sortField]="sortField" [columns]="cols"
+             [sortOrder]="sortOrder" [reorderableColumns]="true" [rows]="10" [lazy]="false" [totalRecords]="totalRecords">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon *ngIf="col.sort" [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{product.code}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.providerName}}</td>
+          <td>
+            <p-tag *ngIf="product.stock > 0" value="{{product.stock}}" rounded="true" severity="success"></p-tag>
+            <p-tag *ngIf="product.stock <= 0" value="{{product.stock}}" rounded="true" severity="danger"></p-tag>
+          </td>
+          <td>{{product.netPrice}}</td>
+          <td>{{product.sellPrice}}</td>
+          <td style="width: 170px">
+            <div class="row">
+              <div class="actions-table">
+                <i class="pi pi-pencil pi-pencil cursorPointer" style="font-size: 2rem" (click)="editProduct(product)"></i>
+                <i class="pi pi-trash pi-trash cursorPointer" style="font-size: 2rem" (click)="confirmDelete(product)"></i>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="text-center" colspan="8" style="text-align: center;">
+            <b class="h8">There is no information</b>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

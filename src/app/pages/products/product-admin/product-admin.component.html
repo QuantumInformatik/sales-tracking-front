@@ -1,0 +1,4 @@
+<app-product-edit #productEditComponent [productEdit]="productSelected"
+                  (outputEmitProductSaved)="outputEmitProductSaved()"></app-product-edit>
+
+<app-product-list #productListComponent (outputEmitProduct)="outputEmitProduct($event)"></app-product-list>

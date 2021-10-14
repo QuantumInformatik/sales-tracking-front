@@ -1,0 +1,73 @@
+<div class="card card-user">
+  <div class="card-header">
+    <h5 class="card-title">Create product</h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-4">
+          <div class="form-group">
+            <label>Name</label>
+            <input style="width: 100%;" class="form-control" pInputText type="text" formControlName="name"
+                   [ngClass]="(form.controls['name'].dirty || form.controls['name'].touched) && form.controls['name'].invalid?
+                   'form-control is-invalid': 'form-control'"/>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label>Code</label>
+            <input style="width: 100%;" class="form-control" pInputText type="text" formControlName="code"
+                   [ngClass]="(form.controls['code'].dirty || form.controls['code'].touched) && form.controls['code'].invalid?
+                   'form-control is-invalid': 'form-control'"/>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="mb-2">
+            <label class="form-label">Providers</label><br>
+            <p-autoComplete [(ngModel)]="providerSelected" [suggestions]="providers" formControlName="providerId"
+                            (completeMethod)="filterProvider($event)" field="name" [dropdown]="true">
+              <ng-template let-provider pTemplate="item">
+                <div class="provider">
+                  <div>{{provider.name}}</div>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>Stock</label>
+            <input style="width: 100%;" class="form-control" pInputText type="number" formControlName="stock"
+                   [ngClass]="(form.controls['stock'].dirty || form.controls['stock'].touched) && form.controls['stock'].invalid?
+                   'form-control is-invalid': 'form-control'"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label>Net price</label>
+            <input style="width: 100%;" class="form-control" pInputText type="number" formControlName="netPrice"
+                   [ngClass]="(form.controls['netPrice'].dirty || form.controls['netPrice'].touched) && form.controls['netPrice'].invalid?
+                   'form-control is-invalid': 'form-control'"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label>Sell price</label>
+            <input style="width: 100%;" class="form-control" pInputText type="number" formControlName="sellPrice"
+                   [ngClass]="(form.controls['sellPrice'].dirty || form.controls['sellPrice'].touched) && form.controls['sellPrice'].invalid?
+                   'form-control is-invalid': 'form-control'"/>
+          </div>
+        </div>
+      </div>
+      <div class="row mr-1">
+        <div class="update ml-auto ">
+          <button type="submit" class="btn btn-primary btn-round" (click)="clearProduct()">Clear</button>
+          <button type="submit" class="btn btn-primary btn-round" (click)="saveProduct()"
+                  [disabled]="!form.valid || disableButton">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
