@@ -1,7 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ProductService} from "../../../core/services/product.service";
 import {Subscription} from "rxjs";
 import {ProductInvoice} from "../../../core/model/product-invoice.dto";
+import {CustomerService} from "../../../core/services/customer.service";
+import {Provider} from "../../../core/model/provider.dto";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-product-invoice-list',
@@ -11,11 +14,14 @@ import {ProductInvoice} from "../../../core/model/product-invoice.dto";
 export class ProductInvoiceListComponent implements OnInit, OnDestroy {
 
   private sub: Subscription = new Subscription();
+  @Output() outputEmitProductInvoice: EventEmitter<any> = new EventEmitter();
   public cols: any[] | undefined;
   public colsSelected: any[] | undefined;
   productsInvoice: Array<ProductInvoice> = [];
   productsInvoiceSelected: Array<ProductInvoice> = [];
   productsInvoiceSelectedT: Array<ProductInvoice> = [];
+  customers: any[];
+  customerSelected: any;
   totalRecords = 0;
   public sortField = 'id';
   public sortOrder = 1;
@@ -28,7 +34,7 @@ export class ProductInvoiceListComponent implements OnInit, OnDestroy {
   subtotal: number = 0;
   total: number = 0;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private customerService: CustomerService) { }
 
   ngOnInit(): void {
     this.cols = [
@@ -76,6 +82,27 @@ export class ProductInvoiceListComponent implements OnInit, OnDestroy {
     }));
   }
 
+  getCustomersByName(name?: any): void {
+    this.sub.add(this.customerService.getCustomers(name).subscribe(data => {
+      if(data.body) {
+        this.customers = data.body
+      }
+    }, error => {
+      this.loading = false;
+      console.error('Error: ' + error);
+    }, () => {
+      this.loading = false;
+    }));
+  }
+
+  selectCustomer(event: any) {
+    this.customerSelected = event
+  }
+
+  filterCustomer(event: any) {
+    this.getCustomersByName(event.query)
+  }
+
   public getTotal(quantity: any, sellPrice: any){
     let total = Number(quantity)*Number(sellPrice)
     if(total){
@@ -108,6 +135,7 @@ export class ProductInvoiceListComponent implements OnInit, OnDestroy {
     }
     this.getSubtotal()
     this.getTotalFinal()
+    this.outputEmitProductInvoice.emit();
   }
 
   onChange(product: any) {
@@ -122,6 +150,7 @@ export class ProductInvoiceListComponent implements OnInit, OnDestroy {
     this.productsInvoiceSelected = this.productsInvoiceSelected.filter(obj => obj !== product);
     this.getSubtotal()
     this.getTotalFinal()
+    this.outputEmitProductInvoice.emit();
   }
 
   selectProduct(event: any) {
@@ -136,8 +165,13 @@ export class ProductInvoiceListComponent implements OnInit, OnDestroy {
     this.getProductsByName(event.query)
   }
 
-  saveInvoice() {
-    console.log("save invoice")
+  public buildProductsInvoice(){
+    let productsInvoiceWithCustomer: any = {}
+    productsInvoiceWithCustomer.products = this.productsInvoiceSelected
+    productsInvoiceWithCustomer.customer = this.customerSelected
+    productsInvoiceWithCustomer.total = this.total
+    productsInvoiceWithCustomer.subtotal = this.subtotal
+    return productsInvoiceWithCustomer
   }
 
   ngOnDestroy(): void {
