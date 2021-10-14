@@ -4,6 +4,7 @@ export class Product {
   code: any
   stock: any
   providerId: any
+  providerProductId: any
   netPrice: any
   sellPrice: any
   timestamp: any
