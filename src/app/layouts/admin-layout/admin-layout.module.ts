@@ -24,14 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule
   ],
   declarations: [
-    DashboardComponent,
-    UserComponent,
-    TableComponent,
-    UpgradeComponent,
-    TypographyComponent,
-    IconsComponent,
-    MapsComponent,
-    NotificationsComponent,
+
   ]
 })
 
