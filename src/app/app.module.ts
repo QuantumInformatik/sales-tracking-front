@@ -28,6 +28,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import { InvoiceAdminComponent } from './pages/invoice/invoice-admin/invoice-admin.component';
 import { ProductInvoiceListComponent } from './pages/invoice/product-invoice-list/product-invoice-list.component';
 import {TagModule} from "primeng/tag";
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {TagModule} from "primeng/tag";
     ReportAdminComponent,
     InvoiceAdminComponent,
     ProductInvoiceListComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
