@@ -1,1 +1,16 @@
-<app-product-invoice-list></app-product-invoice-list>
+<app-product-invoice-list #productInvoiceListComponent
+                          (outputEmitProductInvoice)="outputEmitProductInvoice()"></app-product-invoice-list>
+
+<div class="card card-user">
+  <div class="card-body">
+    <div align="right">
+      <h5>Subtotal: {{subtotal}}</h5>
+      <h5>Total: {{total}}</h5>
+    </div>
+    <div class="row mr-1">
+      <div class="update ml-auto ">
+        <button type="submit" class="btn btn-primary btn-round" (click)="saveInvoice()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

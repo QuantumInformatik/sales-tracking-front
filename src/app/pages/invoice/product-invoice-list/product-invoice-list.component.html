@@ -5,6 +5,21 @@
   <div class="card-body">
     <div class="col-4">
       <div class="mb-2">
+        <label class="form-label">Search customers</label><br>
+        <p-autoComplete [(ngModel)]="customerSelected" [suggestions]="customers" (onSelect)="selectCustomer($event)"
+                        (completeMethod)="filterCustomer($event)" field="name" [dropdown]="true">
+          <ng-template let-customer pTemplate="item">
+            <div class="customer">
+              <div>{{customer.name}}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+    </div>
+    <br>
+
+    <div class="col-4">
+      <div class="mb-2">
         <label class="form-label">Search products</label><br>
         <p-autoComplete [(ngModel)]="productFind" [suggestions]="products" (onSelect)="selectProduct($event)"
                         (completeMethod)="filterProduct($event)" field="name" [dropdown]="true">
@@ -110,20 +125,6 @@
         </tr>
       </ng-template>
     </p-table>
-  </div>
-</div>
-
-<div class="card card-user">
-  <div class="card-body">
-    <div align="right">
-      <h5>Subtotal: {{subtotal}}</h5>
-      <h5>Total: {{total}}</h5>
-    </div>
-    <div class="row mr-1">
-      <div class="update ml-auto ">
-        <button type="submit" class="btn btn-primary btn-round" (click)="saveInvoice()">Save</button>
-      </div>
-    </div>
   </div>
 </div>
 
